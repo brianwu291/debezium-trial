@@ -34,3 +34,7 @@ docker compose -f docker-compose-postgres.yaml exec postgres env PGOPTIONS="--se
 ```
 docker compose -f docker-compose-postgres.yaml down
 ```
+
+## Or, just using the docker-compose-postgres.yaml file to compose up
+
+Can refs the `compose-starter.sh` file to get related commands
