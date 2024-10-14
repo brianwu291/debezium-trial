@@ -2,10 +2,15 @@
 
 # Start the topology as defined in https://debezium.io/documentation/reference/stable/tutorial.html
 export DEBEZIUM_VERSION=2.7
-docker compose -f docker-compose-postgres.yaml up
+docker compose -f docker-compose-postgres.yaml up --build
 
 # Start Postgres connector
-curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-postgres.json
+curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-connector-source.json
+
+
+# Start jdbc sink connector
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-connector-target.json
+
 
 # Consume messages from a Debezium topic
 docker compose -f docker-compose-postgres.yaml exec kafka /kafka/bin/kafka-console-consumer.sh \

@@ -14,20 +14,31 @@ services:
      - zookeeper
     environment:
      - ZOOKEEPER_CONNECT=zookeeper:2181
-  postgres:
+  postgres_source:
     image: quay.io/debezium/example-postgres:${DEBEZIUM_VERSION}
     ports:
      - 5432:5432
     environment:
      - POSTGRES_USER=postgres
      - POSTGRES_PASSWORD=postgres
+  postgres_target:
+    image: postgres:13
+    ports:
+     - 5433:5432
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_DB=sink_db
   connect:
-    image: quay.io/debezium/connect:${DEBEZIUM_VERSION}
+    build:
+      context: .
+      dockerfile: jdbc-connector.dockerfile
     ports:
      - 8083:8083
     links:
      - kafka
-     - postgres
+     - postgres_source
+     - postgres_target
     environment:
      - BOOTSTRAP_SERVERS=kafka:9092
      - GROUP_ID=1
