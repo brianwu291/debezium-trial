@@ -5,6 +5,8 @@
 -- -------------------------------------------------------------
 
 
+CREATE schema IF NOT EXISTS inventory;
+
 DROP VIEW IF EXISTS "inventory"."geography_columns";
 
 
